@@ -1,35 +1,33 @@
-# CS3354-CoursePals-Project-cj
+# Course Pals
 
-This is a [Next.js](https://nextjs.org) project bootstrapped with [v0](https://v0.app).
+Course Pals is a web application designed to help university students connect with classmates, form study groups, and manage their academic experience more effectively.
 
-## Built with v0
+## Project Features
 
-This repository is linked to a [v0](https://v0.app) project. You can continue developing by visiting the link below -- start new chats to make changes, and v0 will push commits directly to this repo. Every merge to `main` will automatically deploy.
+- **User Authentication:** Secure sign up, login, and logout for all users.
+- **Sidebar Navigation:** Persistent sidebar for easy access to all dashboard features.
+- **Profile Management:** Edit and save your profile, including name, major, year, and bio.
+- **Course Schedule:** Add, view, and remove your enrolled courses and sections.
+- **Section-Based Matching:** Instantly find and connect with students in the exact same course sections.
+- **Messaging:** Send and receive messages with other students.
+- **Group Chats:** Join or create group chats for collaborative study.
+- **Study Sessions:** Organize and join study sessions with classmates.
+- **Course Feed:** Stay updated with course-related announcements and discussions.
+- **Notifications:** Receive alerts for messages, study sessions, and other important updates.
+- **Demo Users:** Always see matches for demo purposes, even if no real users are present.
 
-[Continue working on v0 →](https://v0.app/chat/projects/prj_en0G5g3xWauV5IttIBEsEv9gc9gY)
+## About the Project
 
-## Getting Started
+Course Pals was built as a CS3354 class project to demonstrate full-stack web development, user experience design, and real-time collaboration features for students. The app is built with Next.js and React, and uses Firebase for authentication and data storage.
 
-First, run the development server:
+## How It Works
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-```
+1. **Sign up or log in** to your account.
+2. **Add your courses and sections** to your schedule.
+3. **Find classmates** in your exact sections and connect with them.
+4. **Message, join groups, and organize study sessions** directly from the dashboard.
+5. **Edit your profile** and manage your preferences at any time.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+---
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
-
-## Learn More
-
-To learn more, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-- [v0 Documentation](https://v0.app/docs) - learn about v0 and how to use it.
-
-<a href="https://v0.app/chat/api/kiro/clone/vishnusb18/CS3354-CoursePals-Project-cj" alt="Open in Kiro"><img src="https://pdgvvgmkdvyeydso.public.blob.vercel-storage.com/open%20in%20kiro.svg?sanitize=true" /></a>
+For questions or feedback, please contact the project team or your course instructor.
