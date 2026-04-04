@@ -24,6 +24,9 @@ export function StudentCard({ student }: StudentCardProps) {
     .map((n) => n[0])
     .join("");
 
+  // Defensive: allow sharedCourses to be missing or undefined
+  const sharedCourses = Array.isArray(student.sharedCourses) ? student.sharedCourses : [];
+
   return (
     <Card className="flex flex-col">
       <CardContent className="flex-1 p-4">
@@ -44,11 +47,15 @@ export function StudentCard({ student }: StudentCardProps) {
         <div>
           <p className="mb-2 text-xs font-medium text-muted-foreground">Shared Courses</p>
           <div className="flex flex-wrap gap-1">
-            {student.sharedCourses.map((course) => (
-              <Badge key={course} variant="secondary" className="bg-primary/10 text-primary text-xs">
-                {course}
-              </Badge>
-            ))}
+            {sharedCourses.length > 0 ? (
+              sharedCourses.map((course) => (
+                <Badge key={course} variant="secondary" className="bg-primary/10 text-primary text-xs">
+                  {course}
+                </Badge>
+              ))
+            ) : (
+              <span className="text-xs text-muted-foreground">None</span>
+            )}
           </div>
         </div>
       </CardContent>

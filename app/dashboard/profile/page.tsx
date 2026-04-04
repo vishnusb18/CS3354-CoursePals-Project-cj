@@ -1,6 +1,7 @@
+
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { PageHeader } from "@/components/page-header";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -11,24 +12,45 @@ import { Switch } from "@/components/ui/switch";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { useAuth } from "@/lib/auth-context";
+
+import Link from "next/link";
 import { Camera, Save } from "lucide-react";
 import { toast } from "sonner";
 
+
+
 export default function ProfilePage() {
   const { user } = useAuth();
+  const [hasMounted, setHasMounted] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
-    const [profile, setProfile] = useState({
-      name: user?.displayName || "",
-      email: user?.email || "",
-      major: "",
-      year: "",
-      grade: "",
-      bio: "",
-      textNotifications: true,
-    });
+  const [profile, setProfile] = useState({
+    name: "",
+    email: "",
+    major: "",
+    year: "",
+    grade: "",
+    bio: "",
+    textNotifications: true,
+  });
+
+  useEffect(() => {
+    setHasMounted(true);
+    // Only access localStorage and user after mount
+    const stored = typeof window !== "undefined" ? localStorage.getItem("profile") : null;
+    if (stored) {
+      setProfile(JSON.parse(stored));
+    } else if (user) {
+      setProfile((p) => ({
+        ...p,
+        name: user.displayName || "",
+        email: user.email || "",
+      }));
+    }
+  }, [user]);
+
 
   const updateField = (field: string, value: string | boolean) => {
-    setProfile((prev) => ({ ...prev, [field]: value }));
+    setProfile((prev: typeof profile) => ({ ...prev, [field]: value }));
   };
 
   const handleSave = () => {
@@ -40,10 +62,16 @@ export default function ProfilePage() {
     // TODO: Save to backend if needed
   };
 
-    const initials = (profile.name || user?.displayName || "?")
-      .split(" ")
-      .map((n) => n[0])
-      .join("");
+  const initials = profile.name
+    .split(" ")
+    .map((n: string) => n[0])
+    .join("");
+
+
+  // Prevent hydration error: render nothing until client mount
+  if (!hasMounted) {
+    return null;
+  }
 
   return (
     <div>
@@ -51,14 +79,19 @@ export default function ProfilePage() {
         title="My Profile"
         description="Manage your account settings and preferences."
       >
-        {isEditing ? (
-          <Button onClick={handleSave}>
-            <Save className="mr-2 h-4 w-4" />
-            Save Changes
-          </Button>
-        ) : (
-          <Button onClick={() => setIsEditing(true)}>Edit Profile</Button>
-        )}
+        <div className="flex gap-2">
+          {isEditing ? (
+            <Button onClick={handleSave}>
+              <Save className="mr-2 h-4 w-4" />
+              Save Changes
+            </Button>
+          ) : (
+            <Button onClick={() => setIsEditing(true)}>Edit Profile</Button>
+          )}
+          <Link href="/dashboard/pals">
+            <Button variant="secondary">Find Course Pals</Button>
+          </Link>
+        </div>
       </PageHeader>
 
       <div className="grid gap-6 lg:grid-cols-3">

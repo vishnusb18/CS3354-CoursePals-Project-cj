@@ -1,7 +1,8 @@
+
 "use client";
 
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -11,6 +12,8 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Menu, Bell, User, BookOpen } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { useAuth } from "@/lib/auth-context";
+import { logout } from "@/lib/firebase";
 
 const navLinks = [
   { href: "/dashboard", label: "Dashboard" },
@@ -24,9 +27,18 @@ export function Navbar() {
   const pathname = usePathname();
   const isLandingPage = pathname === "/";
   const isAuthPage = pathname === "/login" || pathname === "/signup";
+  const { user } = useAuth();
+  const router = useRouter();
+
+  const handleLogout = async () => {
+    await logout();
+    localStorage.removeItem("profile");
+    router.push("/login");
+  };
+
 
   return (
-    <header className="sticky top-0 z-50 w-full border-b border-border bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+    <header className="sticky top-0 z-50 w-full border-b border-border bg-background/95 backdrop-blur supports-backdrop-filter:bg-background/60">
       <div className="container mx-auto flex h-16 items-center justify-between px-4">
         <Link href="/" className="flex items-center gap-2">
           <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary">
@@ -34,25 +46,6 @@ export function Navbar() {
           </div>
           <span className="text-xl font-bold text-foreground">Course Pals</span>
         </Link>
-
-        {!isLandingPage && !isAuthPage && (
-          <nav className="hidden items-center gap-1 md:flex">
-            {navLinks.map((link) => (
-              <Link
-                key={link.href}
-                href={link.href}
-                className={cn(
-                  "rounded-md px-3 py-2 text-sm font-medium transition-colors hover:bg-accent hover:text-accent-foreground",
-                  pathname === link.href || pathname.startsWith(link.href + "/")
-                    ? "bg-accent text-accent-foreground"
-                    : "text-muted-foreground"
-                )}
-              >
-                {link.label}
-              </Link>
-            ))}
-          </nav>
-        )}
 
         <div className="flex items-center gap-2">
           {isLandingPage || isAuthPage ? (
@@ -101,3 +94,4 @@ export function Navbar() {
     </header>
   );
 }
+

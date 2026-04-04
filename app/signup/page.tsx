@@ -1,6 +1,9 @@
 "use client";
 
 import { useState } from "react";
+import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
+import { auth } from "@/lib/firebase";
+import { useAuth } from "@/lib/auth-context";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { Navbar } from "@/components/navbar";
@@ -11,6 +14,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { BookOpen } from "lucide-react";
+import { utdMajors } from "@/lib/utd-majors";
 
 export default function SignupPage() {
   const router = useRouter();
@@ -23,11 +27,38 @@ export default function SignupPage() {
     year: "",
   });
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const { user } = useAuth();
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // TODO: Implement Firebase authentication
-    console.log("Signup attempt:", formData);
-    router.push("/dashboard");
+    setError("");
+    if (formData.password !== formData.confirmPassword) {
+      setError("Passwords do not match");
+      return;
+    }
+    setLoading(true);
+    try {
+      const cred = await createUserWithEmailAndPassword(auth, formData.email, formData.password);
+      if (cred.user) {
+        await updateProfile(cred.user, { displayName: formData.name });
+        // Save extra profile info to localStorage for profile page
+        localStorage.setItem("profile", JSON.stringify({
+          name: formData.name,
+          email: formData.email,
+          major: formData.major,
+          year: formData.year,
+          bio: "",
+          textNotifications: true,
+        }));
+        router.push("/login");
+      }
+    } catch (err: any) {
+      setError(err.message || "Failed to sign up");
+    } finally {
+      setLoading(false);
+    }
   };
 
   const updateField = (field: string, value: string) => {
@@ -37,7 +68,6 @@ export default function SignupPage() {
   return (
     <div className="flex min-h-screen flex-col">
       <Navbar />
-      
       <main className="flex flex-1 items-center justify-center px-4 py-12">
         <Card className="w-full max-w-md">
           <CardHeader className="text-center">
@@ -51,6 +81,7 @@ export default function SignupPage() {
           </CardHeader>
           <form onSubmit={handleSubmit}>
             <CardContent className="space-y-4">
+              {error && <div className="text-red-500 text-sm text-center">{error}</div>}
               <div className="space-y-2">
                 <Label htmlFor="name">Full Name</Label>
                 <Input
@@ -73,7 +104,7 @@ export default function SignupPage() {
                   required
                 />
               </div>
-              <div className="grid gap-4 sm:grid-cols-2">
+                <div className="flex flex-col gap-4">
                 <div className="space-y-2">
                   <Label htmlFor="major">Major</Label>
                   <Select value={formData.major} onValueChange={(value) => updateField("major", value)}>
@@ -81,12 +112,9 @@ export default function SignupPage() {
                       <SelectValue placeholder="Select major" />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="cs">Computer Science</SelectItem>
-                      <SelectItem value="se">Software Engineering</SelectItem>
-                      <SelectItem value="ds">Data Science</SelectItem>
-                      <SelectItem value="it">Information Technology</SelectItem>
-                      <SelectItem value="ce">Computer Engineering</SelectItem>
-                      <SelectItem value="other">Other</SelectItem>
+                      {utdMajors.map((major) => (
+                        <SelectItem key={major} value={major}>{major}</SelectItem>
+                      ))}
                     </SelectContent>
                   </Select>
                 </div>

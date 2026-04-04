@@ -21,6 +21,7 @@ const sidebarLinks = [
   { href: "/courses", label: "Course Directory", icon: BookOpen },
   { href: "/my-courses", label: "My Courses", icon: BookOpen },
   { href: "/pals", label: "Find Pals", icon: Users },
+  { href: "/dashboard/schedule", label: "My Schedule", icon: Calendar },
   { href: "/messages", label: "Messages", icon: MessageSquare },
   { href: "/groups", label: "Group Chats", icon: MessagesSquare },
   { href: "/feed", label: "Course Feed", icon: Newspaper },

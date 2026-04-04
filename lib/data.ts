@@ -9,6 +9,11 @@ export const currentUser = {
   bio: "Passionate about software development and machine learning. Looking for study partners in CS courses!",
   avatar: "/avatars/alex.jpg",
   textNotifications: true,
+  schedule: [
+    { courseCode: "CS 3345", section: "002", title: "Data Structures and Algorithms", meeting: "MWF 10:00-10:50" },
+    { courseCode: "CS 3354", section: "009", title: "Software Engineering", meeting: "TR 11:30-12:45" },
+    { courseCode: "CS 4347", section: "001", title: "Database Systems", meeting: "MWF 1:00-1:50" },
+  ],
 };
 
 export const courses = [
@@ -29,12 +34,131 @@ export const myCourses = [
 ];
 
 export const recommendedStudents = [
-  { id: "2", name: "Sarah Kim", major: "Computer Science", year: "Junior", sharedCourses: ["CS 3345", "CS 3354"], avatar: "/avatars/sarah.jpg" },
-  { id: "3", name: "Michael Chen", major: "Software Engineering", year: "Senior", sharedCourses: ["CS 3354", "CS 4347"], avatar: "/avatars/michael.jpg" },
-  { id: "4", name: "Emily Davis", major: "Computer Science", year: "Junior", sharedCourses: ["CS 3345"], avatar: "/avatars/emily.jpg" },
-  { id: "5", name: "James Wilson", major: "Data Science", year: "Junior", sharedCourses: ["CS 3345", "CS 4347"], avatar: "/avatars/james.jpg" },
-  { id: "6", name: "Maria Garcia", major: "Computer Science", year: "Sophomore", sharedCourses: ["CS 3345"], avatar: "/avatars/maria.jpg" },
-  { id: "7", name: "David Lee", major: "Information Technology", year: "Junior", sharedCourses: ["CS 3354"], avatar: "/avatars/david.jpg" },
+    {
+      id: "10",
+      name: "Demo Match 1",
+      major: "Physics",
+      year: "Senior",
+      avatar: "",
+      bio: "Guaranteed match for demo.",
+      schedule: [
+        { courseCode: "CS 3354", section: "009", title: "Software Engineering", meeting: "TR 11:30-12:45" },
+      ],
+    },
+    {
+      id: "11",
+      name: "Demo Match 2",
+      major: "Biology",
+      year: "Freshman",
+      avatar: "",
+      bio: "Guaranteed match for demo.",
+      schedule: [
+        { courseCode: "CS 4347", section: "001", title: "Database Systems", meeting: "MWF 1:00-1:50" },
+      ],
+    },
+    {
+      id: "12",
+      name: "Demo Match 3",
+      major: "Chemistry",
+      year: "Sophomore",
+      avatar: "",
+      bio: "Guaranteed match for demo.",
+      schedule: [
+        { courseCode: "CS 3345", section: "002", title: "Data Structures and Algorithms", meeting: "MWF 10:00-10:50" },
+      ],
+    },
+  {
+    id: "2",
+    name: "Sarah Kim",
+    major: "Computer Science",
+    year: "Junior",
+    avatar: "/avatars/sarah.jpg",
+    bio: "Love collaborating on projects and hackathons!",
+    schedule: [
+      { courseCode: "CS 3345", section: "002", title: "Data Structures and Algorithms", meeting: "MWF 10:00-10:50" },
+      { courseCode: "CS 3354", section: "009", title: "Software Engineering", meeting: "TR 11:30-12:45" },
+    ],
+  },
+  {
+    id: "3",
+    name: "Michael Chen",
+    major: "Software Engineering",
+    year: "Senior",
+    avatar: "/avatars/michael.jpg",
+    bio: "Interested in backend systems and databases.",
+    schedule: [
+      { courseCode: "CS 3354", section: "009", title: "Software Engineering", meeting: "TR 11:30-12:45" },
+      { courseCode: "CS 4347", section: "001", title: "Database Systems", meeting: "MWF 1:00-1:50" },
+    ],
+  },
+  {
+    id: "4",
+    name: "Emily Davis",
+    major: "Computer Science",
+    year: "Junior",
+    avatar: "/avatars/emily.jpg",
+    bio: "Aspiring AI researcher.",
+    schedule: [
+      { courseCode: "CS 3345", section: "002", title: "Data Structures and Algorithms", meeting: "MWF 10:00-10:50" },
+    ],
+  },
+  {
+    id: "5",
+    name: "James Wilson",
+    major: "Data Science",
+    year: "Junior",
+    avatar: "/avatars/james.jpg",
+    bio: "Data is life!",
+    schedule: [
+      { courseCode: "CS 3345", section: "002", title: "Data Structures and Algorithms", meeting: "MWF 10:00-10:50" },
+      { courseCode: "CS 4347", section: "001", title: "Database Systems", meeting: "MWF 1:00-1:50" },
+    ],
+  },
+  {
+    id: "6",
+    name: "Maria Garcia",
+    major: "Computer Science",
+    year: "Sophomore",
+    avatar: "/avatars/maria.jpg",
+    bio: "Excited to meet new study buddies!",
+    schedule: [
+      { courseCode: "CS 3345", section: "002", title: "Data Structures and Algorithms", meeting: "MWF 10:00-10:50" },
+    ],
+  },
+  {
+    id: "7",
+    name: "David Lee",
+    major: "Information Technology",
+    year: "Junior",
+    avatar: "/avatars/david.jpg",
+    bio: "Always up for a group project.",
+    schedule: [
+      { courseCode: "CS 3354", section: "009", title: "Software Engineering", meeting: "TR 11:30-12:45" },
+    ],
+  },
+  // Extra demo users for matching
+  {
+    id: "8",
+    name: "Demo User 1",
+    major: "History",
+    year: "Sophomore",
+    avatar: "",
+    bio: "Demo user for matching.",
+    schedule: [
+      { courseCode: "CS 3354", section: "009", title: "Software Engineering", meeting: "TR 11:30-12:45" },
+    ],
+  },
+  {
+    id: "9",
+    name: "Demo User 2",
+    major: "Math",
+    year: "Freshman",
+    avatar: "",
+    bio: "Demo user for matching.",
+    schedule: [
+      { courseCode: "CS 4347", section: "001", title: "Database Systems", meeting: "MWF 1:00-1:50" },
+    ],
+  },
 ];
 
 export const conversations = [
