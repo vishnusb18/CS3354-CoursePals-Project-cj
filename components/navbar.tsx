@@ -70,6 +70,9 @@ export function Navbar() {
                   <User className="h-5 w-5" />
                 </Link>
               </Button>
+              <Button variant="outline" size="sm" onClick={handleLogout} className="ml-2">
+                Logout
+              </Button>
               <DropdownMenu>
                 <DropdownMenuTrigger asChild className="md:hidden">
                   <Button variant="ghost" size="icon">
@@ -85,6 +88,7 @@ export function Navbar() {
                   <DropdownMenuItem asChild>
                     <Link href="/profile">Profile</Link>
                   </DropdownMenuItem>
+                  <DropdownMenuItem onClick={handleLogout}>Logout</DropdownMenuItem>
                 </DropdownMenuContent>
               </DropdownMenu>
             </>
