@@ -1,3 +1,5 @@
+//Rohan Antony : Manages the notifications page UI, allowing users to view alerts and mark them as read.
+
 "use client";
 
 import { useState } from "react";

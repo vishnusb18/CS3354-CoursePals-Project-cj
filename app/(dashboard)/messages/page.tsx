@@ -1,3 +1,5 @@
+// Rohan Antony : Handles the messaging page UI, allowing users to view conversations and send messages within a selected chat.
+
 "use client";
 
 import { useState } from "react";
@@ -35,7 +37,7 @@ export default function MessagesPage() {
     setNewMessage("");
     // TODO: Send message to backend
   };
-
+  //
   return (
     <div>
       <PageHeader
