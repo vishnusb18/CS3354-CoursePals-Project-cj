@@ -1,4 +1,11 @@
-"use client";
+/** Parsa-profile page: a page that displays and manages a users 
+ * profile details it includes
+ * name
+ * major
+ * email
+ * academic year
+ * bio */
+ "use client";
 
 import { useState } from "react";
 import { PageHeader } from "@/components/page-header";
@@ -14,6 +21,7 @@ import { useAuth } from "@/lib/auth-context";
 import { Camera, Save } from "lucide-react";
 import { toast } from "sonner";
 
+// updating edits to proile (dynamic)
 export default function ProfilePage() {
   const { user } = useAuth();
   const [isEditing, setIsEditing] = useState(false);
@@ -30,7 +38,7 @@ export default function ProfilePage() {
   const updateField = (field: string, value: string | boolean) => {
     setProfile((prev) => ({ ...prev, [field]: value }));
   };
-
+// save profile changes 
   const handleSave = () => {
     setIsEditing(false);
     toast.success("Profile updated successfully!");
@@ -40,6 +48,7 @@ export default function ProfilePage() {
     // TODO: Save to backend if needed
   };
 
+  // generate user initials
     const initials = (profile.name || user?.displayName || "?")
       .split(" ")
       .map((n) => n[0])
