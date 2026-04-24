@@ -36,6 +36,11 @@ export default function NotificationsPage() {
           </Button>
         )}
       </PageHeader>
+      
+{/**Hansi : Notification List UI
+ * Displays all new notification types.
+ * If there are no new notifications, "No notifications yet." is displayed.
+ */}
 
       <div className="space-y-3">
         {localNotifications.map((notification) => (

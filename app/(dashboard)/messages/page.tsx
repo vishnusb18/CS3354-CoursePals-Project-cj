@@ -96,6 +96,11 @@ export default function MessagesPage() {
           </CardContent>
         </Card>
 
+        {/** Hansi : Chat View
+         * When on the messaging tab, the user's currently selected (active) conversation is displayed on the right side of the screen.
+         * Rendered: header (the name of the person the user's messaging) + chat history
+         */}
+
         {/* Chat View */}
         <Card className="flex flex-col lg:col-span-2">
           <CardHeader className="border-b border-border pb-4">
