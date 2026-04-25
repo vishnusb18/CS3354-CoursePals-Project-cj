@@ -12,6 +12,7 @@ import { polls, myCourses, currentUser } from "@/lib/data";
 import { Plus, X } from "lucide-react";
 import { toast } from "sonner";
 
+// Author: Vishnu
 // Polls page where students can create and vote on course-related polls
 // Useful for scheduling study sessions or getting feedback on topics
 export default function PollsPage() {

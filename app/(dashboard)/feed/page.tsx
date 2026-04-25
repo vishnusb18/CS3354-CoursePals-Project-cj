@@ -12,6 +12,7 @@ import { feedPosts, myCourses, currentUser } from "@/lib/data";
 import { Paperclip, FileText, Send } from "lucide-react";
 import { toast } from "sonner";
 
+// Author: Vishnu
 // Course feed page where students can post updates and view classmates' posts
 // Similar to a social media feed but filtered by course
 export default function FeedPage() {

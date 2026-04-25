@@ -11,6 +11,7 @@ import { groupChats, groupMessages, currentUser } from "@/lib/data";
 import { cn } from "@/lib/utils";
 import { Plus, Send, Users } from "lucide-react";
 
+// Author: Vishnu
 // Group chat page where students can message in course-based groups
 // Layout has two parts: group list on the left, active chat on the right
 export default function GroupChatsPage() {

@@ -7,6 +7,7 @@ import { SearchBar } from "@/components/search-bar";
 import { courses, myCourses } from "@/lib/data";
 import { toast } from "sonner";
 
+// Author: Vishnu
 // Main page component for the course directory
 // Allows students to browse all available courses and enroll/unenroll
 export default function CourseDirectoryPage() {
