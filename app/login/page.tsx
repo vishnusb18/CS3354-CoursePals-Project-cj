@@ -1,8 +1,12 @@
+// Lalith: Handles the login page UI and signs in existing users with Firebase authentication.
+// A user can also navigate to the signup page if they don't have an account. 
+// The page includes error handling for failed login attempts and displays appropriate messages to the user.
+
 "use client";
 
 import { useState } from "react";
 import { signInWithEmailAndPassword } from "firebase/auth";
-import { auth } from "@/lib/firebase";
+import { getClientAuth } from "@/lib/firebase";
 import { useAuth } from "@/lib/auth-context";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -28,6 +32,7 @@ export default function LoginPage() {
     setError("");
     setLoading(true);
     try {
+      const auth = getClientAuth();
       await signInWithEmailAndPassword(auth, email, password);
       router.push("/dashboard");
     } catch (err: any) {

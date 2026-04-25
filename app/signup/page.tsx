@@ -1,8 +1,13 @@
+// Lalith: Handles the signup page UI and creates new user accounts with Firebase authentication.
+// The form collects the user's name, email, password, major, and year. 
+// It includes error handling for failed signup attempts and displays appropriate messages to the user.
+// After successful signup, the user is redirected to the login page to sign in with their new account.
+
 "use client";
 
 import { useState } from "react";
 import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
-import { auth } from "@/lib/firebase";
+import { getClientAuth } from "@/lib/firebase";
 import { useAuth } from "@/lib/auth-context";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -40,6 +45,7 @@ export default function SignupPage() {
     }
     setLoading(true);
     try {
+      const auth = getClientAuth();
       const cred = await createUserWithEmailAndPassword(auth, formData.email, formData.password);
       if (cred.user) {
         await updateProfile(cred.user, { displayName: formData.name });

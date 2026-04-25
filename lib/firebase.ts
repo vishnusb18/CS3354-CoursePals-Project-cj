@@ -1,6 +1,6 @@
 // Firebase configuration and initialization
-import { initializeApp } from "firebase/app";
-import { getAuth, signOut } from "firebase/auth";
+import { getApp, getApps, initializeApp } from "firebase/app";
+import { Auth, getAuth, signOut } from "firebase/auth";
 
 const firebaseConfig = {
   apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
@@ -11,10 +11,40 @@ const firebaseConfig = {
   appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID,
 };
 
+const hasFirebaseEnv = Object.values(firebaseConfig).every(
+  (value) => typeof value === "string" && value.length > 0,
+);
 
-const app = initializeApp(firebaseConfig);
-export const auth = getAuth(app);
+const app = hasFirebaseEnv
+  ? getApps().length
+    ? getApp()
+    : initializeApp(firebaseConfig)
+  : null;
+
+let authInstance: Auth | null = null;
+
+export function getClientAuth(): Auth {
+  if (typeof window === "undefined") {
+    throw new Error("Firebase Auth can only be used in the browser.");
+  }
+
+  if (!app) {
+    throw new Error(
+      "Firebase env variables are missing. Add NEXT_PUBLIC_FIREBASE_* values to .env.local and restart the Next.js server.",
+    );
+  }
+
+  if (!authInstance) {
+    authInstance = getAuth(app);
+  }
+
+  return authInstance;
+}
 
 export function logout() {
-  return signOut(auth);
+  if (typeof window === "undefined") {
+    return Promise.resolve();
+  }
+
+  return signOut(getClientAuth());
 }
