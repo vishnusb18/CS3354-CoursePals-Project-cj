@@ -8,7 +8,7 @@ import { currentUser, recommendedStudents } from "@/lib/data";
 
 
 export default function PalsPage() {
-  // Combine current user and recommended students for matching
+  // Haris: System Combines current user and recommended students for matching - UC3
   const allUsers = [currentUser, ...recommendedStudents];
   const mySections = currentUser.schedule || [];
 

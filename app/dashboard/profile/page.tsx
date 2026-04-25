@@ -1,4 +1,4 @@
-
+// Haris: Only allow access to profile page after user has been authenticated - UC1
 "use client";
 
 import { useState, useEffect } from "react";
@@ -48,7 +48,7 @@ export default function ProfilePage() {
     }
   }, [user]);
 
-
+  // CRUD Applications to make changes to profile page information - Connect to Backend (CSV File) 
   const updateField = (field: string, value: string | boolean) => {
     setProfile((prev: typeof profile) => ({ ...prev, [field]: value }));
   };
@@ -59,7 +59,7 @@ export default function ProfilePage() {
     if (typeof window !== "undefined") {
       localStorage.setItem("profile", JSON.stringify(profile));
     }
-    // TODO: Save to backend if needed
+    // TODO: Save to backend if needed --> (CSV File)
   };
 
   const initials = profile.name
@@ -106,123 +106,123 @@ export default function ProfilePage() {
               </Avatar>
               {isEditing && (
                 <Button
-                  variant="secondary"
-                  size="icon"
-                  className="absolute bottom-0 right-0 rounded-full"
+                  variant = "secondary"
+                  size = "icon"
+                  className = "absolute bottom-0 right-0 rounded-full"
                 >
-                  <Camera className="h-4 w-4" />
+                  <Camera className = "h-4 w-4" />
                 </Button>
               )}
             </div>
-            <h2 className="mt-4 text-xl font-semibold text-foreground">{profile.name}</h2>
-            <p className="text-muted-foreground">{profile.major}</p>
-            <p className="text-sm text-muted-foreground">{profile.year}</p>
+            <h2 className = "mt-4 text-xl font-semibold text-foreground">{profile.name}</h2>
+            <p className = "text-muted-foreground">{profile.major}</p>
+            <p className = "text-sm text-muted-foreground">{profile.year}</p>
             {profile.grade && (
-              <p className="text-sm text-muted-foreground">Grade: {profile.grade}</p>
+              <p className = "text-sm text-muted-foreground">Grade: {profile.grade}</p>
             )}
           </CardContent>
         </Card>
 
         {/* Profile Details */}
-        <Card className="lg:col-span-2">
+        <Card className = "lg:col-span-2">
           <CardHeader>
             <CardTitle>Profile Information</CardTitle>
           </CardHeader>
-          <CardContent className="space-y-4">
-            <div className="grid gap-4 sm:grid-cols-2">
-              <div className="space-y-2">
-                <Label htmlFor="name">Full Name</Label>
+          <CardContent className = "space-y-4">
+            <div className = "grid gap-4 sm:grid-cols-2">
+              <div className = "space-y-2">
+                <Label htmlFor = "name">Full Name</Label>
                 <Input
-                  id="name"
-                  value={profile.name}
-                  onChange={(e) => updateField("name", e.target.value)}
-                  disabled={!isEditing}
+                  id = "name"
+                  value = {profile.name}
+                  onChange = {(e) => updateField("name", e.target.value)}
+                  disabled = {!isEditing}
                 />
               </div>
-              <div className="space-y-2">
-                <Label htmlFor="email">UTD Email</Label>
+              <div className = "space-y-2">
+                <Label htmlFor = "email">UTD Email</Label>
                 <Input
-                  id="email"
-                  type="email"
-                  value={profile.email}
-                  onChange={(e) => updateField("email", e.target.value)}
-                  disabled={!isEditing}
+                  id = "email"
+                  type = "email"
+                  value = {profile.email}
+                  onChange = {(e) => updateField("email", e.target.value)}
+                  disabled = {!isEditing}
                 />
               </div>
             </div>
 
-            <div className="grid gap-4 sm:grid-cols-2">
-              <div className="space-y-2">
-                <Label htmlFor="major">Major</Label>
+            <div className = "grid gap-4 sm:grid-cols-2">
+              <div className = "space-y-2">
+                <Label htmlFor = "major">Major</Label>
                 {isEditing ? (
-                  <Select value={profile.major} onValueChange={(v) => updateField("major", v)}>
-                    <SelectTrigger id="major">
+                  <Select value = {profile.major} onValueChange = {(v) => updateField("major", v)}>
+                    <SelectTrigger id = "major">
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="Computer Science">Computer Science</SelectItem>
-                      <SelectItem value="Software Engineering">Software Engineering</SelectItem>
-                      <SelectItem value="Data Science">Data Science</SelectItem>
-                      <SelectItem value="Information Technology">Information Technology</SelectItem>
-                      <SelectItem value="Computer Engineering">Computer Engineering</SelectItem>
+                      <SelectItem value = "Computer Science">Computer Science</SelectItem>
+                      <SelectItem value = "Software Engineering">Software Engineering</SelectItem>
+                      <SelectItem value ="Data Science">Data Science</SelectItem>
+                      <SelectItem value = "Information Technology">Information Technology</SelectItem>
+                      <SelectItem value = "Computer Engineering">Computer Engineering</SelectItem>
                     </SelectContent>
                   </Select>
                 ) : (
                   <Input value={profile.major} disabled />
                 )}
               </div>
-              <div className="space-y-2">
-                <Label htmlFor="year">Academic Year</Label>
+              <div className = "space-y-2">
+                <Label htmlFor = "year">Academic Year</Label>
                 {isEditing ? (
-                  <Select value={profile.year} onValueChange={(v) => updateField("year", v)}>
-                    <SelectTrigger id="year">
+                  <Select value = {profile.year} onValueChange={(v) => updateField("year", v)}>
+                    <SelectTrigger id = "year">
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="Freshman">Freshman</SelectItem>
-                      <SelectItem value="Sophomore">Sophomore</SelectItem>
-                      <SelectItem value="Junior">Junior</SelectItem>
-                      <SelectItem value="Senior">Senior</SelectItem>
-                      <SelectItem value="Graduate">Graduate</SelectItem>
+                      <SelectItem value = "Freshman">Freshman</SelectItem>
+                      <SelectItem value = "Sophomore">Sophomore</SelectItem>
+                      <SelectItem value = "Junior">Junior</SelectItem>
+                      <SelectItem value = "Senior">Senior</SelectItem>
+                      <SelectItem value = "Graduate">Graduate</SelectItem>
                     </SelectContent>
                   </Select>
                 ) : (
-                  <Input value={profile.year} disabled />
+                  <Input value = {profile.year} disabled />
                 )}
               </div>
             </div>
 
-            <div className="space-y-2">
-              <Label htmlFor="bio">Bio</Label>
+            <div className = "space-y-2">
+              <Label htmlFor = "bio">Bio</Label>
               <Textarea
-                id="bio"
-                placeholder="Tell us about yourself..."
-                value={profile.bio}
-                onChange={(e) => updateField("bio", e.target.value)}
-                disabled={!isEditing}
-                className="min-h-25"
+                id = "bio"
+                placeholder = "Tell us about yourself..."
+                value = {profile.bio}
+                onChange = {(e) => updateField("bio", e.target.value)}
+                disabled = {!isEditing}
+                className = "min-h-25"
               />
             </div>
           </CardContent>
         </Card>
 
         {/* Preferences */}
-        <Card className="lg:col-span-3">
+        <Card className = "lg:col-span-3">
           <CardHeader>
             <CardTitle>Preferences</CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="flex items-center justify-between rounded-lg border border-border p-4">
+            <div className = "flex items-center justify-between rounded-lg border border-border p-4">
               <div>
-                <p className="font-medium text-foreground">Text Notifications</p>
-                <p className="text-sm text-muted-foreground">
+                <p className = "font-medium text-foreground">Text Notifications</p>
+                <p className = "text-sm text-muted-foreground">
                   Receive SMS notifications for messages and study sessions
                 </p>
               </div>
               <Switch
-                checked={profile.textNotifications}
-                onCheckedChange={(checked) => updateField("textNotifications", checked)}
-                disabled={!isEditing}
+                checked = {profile.textNotifications}
+                onCheckedChange = {(checked) => updateField("textNotifications", checked)}
+                disabled = {!isEditing}
               />
             </div>
           </CardContent>
