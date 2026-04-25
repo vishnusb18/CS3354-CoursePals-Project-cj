@@ -11,7 +11,8 @@ import { courses, myCourses } from "@/lib/data";
 import { Plus, Users } from "lucide-react";
 import { toast } from "sonner";
 
-// Haris: The system displays suggested courses based on major (Draft V2)
+// Haris: The system displays suggested courses based on major (Draft V3)
+// Note: The system shows empty state if no courses added
 const suggestedCourses = courses.filter((c) => !myCourses.find((mc) => mc.id === c.id)).slice(0, 3);
 
 export default function MyCoursesPage() {
@@ -33,6 +34,10 @@ export default function MyCoursesPage() {
     }
   };
 
+  // Display enrolled courses with option to remove,
+  // and show suggested courses with option to add
+  // If no enrolled courses, show empty state with link to browse courses
+  // TODO: implement the backend saving logic
   return (
     <div>
       <PageHeader

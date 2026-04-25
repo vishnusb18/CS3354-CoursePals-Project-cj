@@ -35,8 +35,10 @@ export default function ProfilePage() {
 
   useEffect(() => {
     setHasMounted(true);
+
     // Only access localStorage and user after mount
     const stored = typeof window !== "undefined" ? localStorage.getItem("profile") : null;
+
     if (stored) {
       setProfile(JSON.parse(stored));
     } else if (user) {
@@ -56,6 +58,7 @@ export default function ProfilePage() {
   const handleSave = () => {
     setIsEditing(false);
     toast.success("Profile updated successfully!");
+
     if (typeof window !== "undefined") {
       localStorage.setItem("profile", JSON.stringify(profile));
     }
@@ -73,6 +76,10 @@ export default function ProfilePage() {
     return null;
   }
 
+  // Display profile information with option to edit, and save changes
+  // Show profile picture (initials fallback) and allow changing it when editing
+  // Show preferences like text notifications with toggle switch
+  // TODO: implement the backend saving logic
   return (
     <div>
       <PageHeader
