@@ -2,32 +2,72 @@
 
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { PageHeader } from "@/components/page-header";
 import { MessageBubble } from "@/components/message-bubble";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { conversations, messages, currentUser } from "@/lib/data";
+import { conversations, currentUser } from "@/lib/data";
+// import { getMessages, sendMessage } from "@/lib/demo-backend";
 import { cn } from "@/lib/utils";
 import { Send } from "lucide-react";
 
 export default function MessagesPage() {
+  type Message = {
+    id: string;
+    senderId: string;
+    content: string;
+    timestamp: string;
+    read?: boolean;
+  };
+  type MessagesMap = { [conversationId: string]: Message[] };
+
+  // Dummy initial messages for each conversation
+  const initialMessages: MessagesMap = {};
+  conversations.forEach((conv, idx) => {
+    initialMessages[conv.id] = [
+      {
+        id: `${conv.id}-1`,
+        senderId: conv.participant.id,
+        content: `Hey! This is a dummy message from ${conv.participant.name}.`,
+        timestamp: "Yesterday",
+        read: idx !== 0, // Only first conversation is unread
+      },
+      {
+        id: `${conv.id}-2`,
+        senderId: currentUser.id,
+        content: `Hi ${conv.participant.name}, this is your reply!`,
+        timestamp: "Yesterday",
+        read: true,
+      },
+    ];
+  });
+
   const [selectedConversation, setSelectedConversation] = useState(conversations[0]);
   const [newMessage, setNewMessage] = useState("");
-  const [localMessages, setLocalMessages] = useState(messages);
+  const [localMessages, setLocalMessages] = useState<MessagesMap>(initialMessages);
 
-  const conversationMessages = localMessages[selectedConversation.id] || [];
+  useEffect(() => {
+    // Ensure a message array exists for the selected conversation
+    setLocalMessages((prev) => ({
+      ...prev,
+      [selectedConversation.id]: prev[selectedConversation.id] || [],
+    }));
+  }, [selectedConversation]);
+
+  const conversationMessages: Message[] = localMessages[selectedConversation.id] || [];
 
   const handleSend = () => {
     if (!newMessage.trim()) return;
 
-    const newMsg = {
+    const newMsg: Message = {
       id: String(Date.now()),
       senderId: currentUser.id,
       content: newMessage,
       timestamp: "Just now",
+      read: true,
     };
 
     setLocalMessages((prev) => ({
@@ -35,9 +75,8 @@ export default function MessagesPage() {
       [selectedConversation.id]: [...(prev[selectedConversation.id] || []), newMsg],
     }));
     setNewMessage("");
-    // TODO: Send message to backend
   };
-  //
+
   return (
     <div>
       <PageHeader
@@ -58,6 +97,11 @@ export default function MessagesPage() {
                   .split(" ")
                   .map((n) => n[0])
                   .join("");
+
+                // Show unread indicator only if there are unread messages from the other user
+                const hasUnread = (localMessages[conversation.id] || []).some(
+                  (msg) => msg.senderId === conversation.participant.id && msg.read === false
+                );
 
                 return (
                   <button
@@ -86,7 +130,7 @@ export default function MessagesPage() {
                         {conversation.lastMessage}
                       </p>
                     </div>
-                    {conversation.unread && (
+                    {hasUnread && (
                       <div className="h-2 w-2 rounded-full bg-primary" />
                     )}
                   </button>
@@ -123,7 +167,7 @@ export default function MessagesPage() {
           </CardHeader>
           <CardContent className="flex flex-1 flex-col p-0">
             <div className="flex-1 space-y-4 overflow-y-auto p-4">
-              {conversationMessages.map((message) => (
+              {conversationMessages.map((message: Message) => (
                 <MessageBubble
                   key={message.id}
                   content={message.content}

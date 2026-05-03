@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { PageHeader } from "@/components/page-header";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
@@ -8,7 +8,10 @@ import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Badge } from "@/components/ui/badge";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { feedPosts, myCourses, currentUser } from "@/lib/data";
+import { feedPosts, myCourses } from "@/lib/data";
+import { useAuth } from "@/lib/auth-context";
+import { getClientFirestore } from "@/lib/firebase";
+import { doc, getDoc } from "firebase/firestore";
 import { Paperclip, FileText, Send } from "lucide-react";
 import { toast } from "sonner";
 
@@ -16,6 +19,28 @@ import { toast } from "sonner";
 // Course feed page where students can post updates and view classmates' posts
 // Similar to a social media feed but filtered by course
 export default function FeedPage() {
+  const { user } = useAuth();
+  const [profile, setProfile] = useState<any>(null);
+
+  // Pull profile info from Firestore if available
+  useEffect(() => {
+    const fetchProfile = async () => {
+      if (!user) return;
+      try {
+        const db = getClientFirestore();
+        const profileRef = doc(db, "profiles", user.uid);
+        const profileSnap = await getDoc(profileRef);
+        if (profileSnap.exists()) {
+          setProfile(profileSnap.data());
+        } else {
+          setProfile(null);
+        }
+      } catch {
+        setProfile(null);
+      }
+    };
+    fetchProfile();
+  }, [user]);
   // Track which course filter is selected
   const [selectedCourse, setSelectedCourse] = useState<string>("all");
   
@@ -32,22 +57,21 @@ export default function FeedPage() {
 
   // Create and publish a new post
   const handlePost = () => {
-    // Don't post if the text area is empty
     if (!newPost.trim()) return;
-
-    // Create new post object with current user info
+    // Prefer Firestore profile, fallback to auth
+    const authorName = profile?.name || user?.displayName || "Unknown";
+    const authorAvatar = profile?.avatar || undefined;
+    const authorId = user?.uid || "";
     const post = {
       id: String(Date.now()),
-      authorId: currentUser.id,
-      authorName: currentUser.name,
-      authorAvatar: currentUser.avatar,
+      authorId,
+      authorName,
+      authorAvatar,
       course: selectedCourse === "all" ? "CS 3345" : selectedCourse,
       content: newPost,
       timestamp: "Just now",
       attachment: null,
     };
-
-    // Add new post to the beginning of the list
     setLocalPosts([post, ...localPosts]);
     setNewPost("");
     toast.success("Post published!");
@@ -83,7 +107,10 @@ export default function FeedPage() {
             {/* User's avatar */}
             <Avatar className="h-10 w-10">
               <AvatarFallback className="bg-primary text-primary-foreground">
-                {currentUser.name.split(" ").map((n) => n[0]).join("")}
+                {(profile?.name || user?.displayName || "?")
+                  .split(" ")
+                  .map((n: string) => n[0])
+                  .join("")}
               </AvatarFallback>
             </Avatar>
             <div className="flex-1 space-y-3">
@@ -92,7 +119,7 @@ export default function FeedPage() {
                 placeholder="Share an update with your classmates..."
                 value={newPost}
                 onChange={(e) => setNewPost(e.target.value)}
-                className="min-h-[80px] resize-none"
+                className="min-h-20 resize-none"
               />
               {/* Action buttons for attaching files and posting */}
               <div className="flex items-center justify-between">

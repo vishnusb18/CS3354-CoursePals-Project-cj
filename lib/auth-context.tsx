@@ -16,7 +16,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   useEffect(() => {
     let unsubscribe: (() => void) | undefined;
-
+    // Only listen for auth state, do not auto-login or redirect
     try {
       const auth = getClientAuth();
       unsubscribe = onAuthStateChanged(auth, (user) => {
@@ -26,7 +26,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     } catch {
       setLoading(false);
     }
-
     return () => unsubscribe?.();
   }, []);
 

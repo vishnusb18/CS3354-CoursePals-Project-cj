@@ -11,7 +11,7 @@ import { useAuth } from "@/lib/auth-context";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { Navbar } from "@/components/navbar";
-import { Footer } from "@/components/footer";
+// import { Footer } from "@/components/footer";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -42,6 +42,8 @@ export default function LoginPage() {
     }
   };
 
+  // Prevent redirect if already authenticated
+  // (for demo, do not auto-redirect)
   return (
     <div className="flex min-h-screen flex-col">
       <Navbar />
@@ -102,7 +104,7 @@ export default function LoginPage() {
         </Card>
       </main>
 
-      <Footer />
+      {/* <Footer /> removed */}
     </div>
   );
 }

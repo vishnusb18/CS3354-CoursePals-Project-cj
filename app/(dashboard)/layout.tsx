@@ -1,6 +1,6 @@
 import { Navbar } from "@/components/navbar";
 import { Sidebar } from "@/components/sidebar";
-import { Footer } from "@/components/footer";
+// import { Footer } from "@/components/footer";
 
 export default function DashboardLayout({
   children,
@@ -18,7 +18,7 @@ export default function DashboardLayout({
           </div>
         </main>
       </div>
-      <Footer />
+      {/* <Footer /> removed */}
     </div>
   );
 }

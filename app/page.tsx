@@ -1,5 +1,5 @@
 import { Navbar } from "@/components/navbar";
-import { Footer } from "@/components/footer";
+// import { Footer } from "@/components/footer";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import Link from "next/link";
@@ -79,17 +79,7 @@ export default function LandingPage() {
             <p className="mx-auto mt-6 max-w-2xl text-pretty text-lg text-muted-foreground sm:text-xl">
               Course Pals helps UTD students find study partners, join course groups, and build meaningful academic connections. Never study alone again.
             </p>
-            <div className="mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row">
-              <Button size="lg" asChild className="px-8">
-                <Link href="/signup">
-                  Get Started
-                  <ArrowRight className="ml-2 h-4 w-4" />
-                </Link>
-              </Button>
-              <Button size="lg" variant="outline" asChild className="px-8">
-                <Link href="/login">Log In</Link>
-              </Button>
-            </div>
+            {/* Auth links removed for demo as requested */}
           </div>
         </section>
 
@@ -190,7 +180,7 @@ export default function LandingPage() {
         </section>
       </main>
 
-      <Footer />
+      {/* <Footer /> removed */}
     </div>
   );
 }

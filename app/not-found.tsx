@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { Navbar } from "@/components/navbar";
-import { Footer } from "@/components/footer";
+// import { Footer } from "@/components/footer";
 import { Button } from "@/components/ui/button";
 import { Home, ArrowLeft } from "lucide-react";
 
@@ -33,7 +33,7 @@ export default function NotFound() {
         </div>
       </main>
 
-      <Footer />
+      {/* <Footer /> removed */}
     </div>
   );
 }

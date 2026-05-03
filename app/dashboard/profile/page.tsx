@@ -12,6 +12,9 @@ import { Switch } from "@/components/ui/switch";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { useAuth } from "@/lib/auth-context";
+import { getFirestore, doc, getDoc, setDoc } from "firebase/firestore";
+import { getApp } from "firebase/app";
+// import { getProfile, updateProfile } from "@/lib/demo-backend";
 
 import Link from "next/link";
 import { Camera, Save } from "lucide-react";
@@ -35,19 +38,23 @@ export default function ProfilePage() {
 
   useEffect(() => {
     setHasMounted(true);
-
-    // Only access localStorage and user after mount
-    const stored = typeof window !== "undefined" ? localStorage.getItem("profile") : null;
-
-    if (stored) {
-      setProfile(JSON.parse(stored));
-    } else if (user) {
-      setProfile((p) => ({
-        ...p,
-        name: user.displayName || "",
-        email: user.email || "",
-      }));
-    }
+    const fetchProfile = async () => {
+      if (user) {
+        const db = getFirestore(getApp());
+        const ref = doc(db, "profiles", user.uid);
+        const snap = await getDoc(ref);
+        if (snap.exists()) {
+          setProfile(snap.data());
+        } else {
+          setProfile((p) => ({
+            ...p,
+            name: user.displayName || "",
+            email: user.email || "",
+          }));
+        }
+      }
+    };
+    fetchProfile();
   }, [user]);
 
   // CRUD Applications to make changes to profile page information - Connect to Backend (CSV File) 
@@ -55,14 +62,14 @@ export default function ProfilePage() {
     setProfile((prev: typeof profile) => ({ ...prev, [field]: value }));
   };
 
-  const handleSave = () => {
+  const handleSave = async () => {
     setIsEditing(false);
-    toast.success("Profile updated successfully!");
-
-    if (typeof window !== "undefined") {
-      localStorage.setItem("profile", JSON.stringify(profile));
+    if (user) {
+      const db = getFirestore(getApp());
+      const ref = doc(db, "profiles", user.uid);
+      await setDoc(ref, profile, { merge: true });
+      toast.success("Profile updated successfully!");
     }
-    // TODO: Save to backend if needed --> (CSV File)
   };
 
   const initials = profile.name

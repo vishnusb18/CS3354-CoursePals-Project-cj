@@ -7,12 +7,14 @@
 
 import { useState } from "react";
 import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
+import { getFirestore, doc, setDoc } from "firebase/firestore";
+import { getApp } from "firebase/app";
 import { getClientAuth } from "@/lib/firebase";
 import { useAuth } from "@/lib/auth-context";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { Navbar } from "@/components/navbar";
-import { Footer } from "@/components/footer";
+// import { Footer } from "@/components/footer";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -36,6 +38,8 @@ export default function SignupPage() {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
+  // Prevent redirect if already authenticated
+  // (for demo, do not auto-redirect)
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError("");
@@ -49,15 +53,16 @@ export default function SignupPage() {
       const cred = await createUserWithEmailAndPassword(auth, formData.email, formData.password);
       if (cred.user) {
         await updateProfile(cred.user, { displayName: formData.name });
-        // Save extra profile info to localStorage for profile page
-        localStorage.setItem("profile", JSON.stringify({
+        // Save extra profile info to Firestore for profile page
+        const db = getFirestore(getApp());
+        await setDoc(doc(db, "profiles", cred.user.uid), {
           name: formData.name,
           email: formData.email,
           major: formData.major,
           year: formData.year,
           bio: "",
           textNotifications: true,
-        }));
+        }, { merge: true });
         router.push("/login");
       }
     } catch (err: any) {
@@ -178,7 +183,7 @@ export default function SignupPage() {
         </Card>
       </main>
 
-      <Footer />
+      {/* <Footer /> removed */}
     </div>
   );
 }

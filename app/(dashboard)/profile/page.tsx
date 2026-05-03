@@ -7,7 +7,7 @@
  * bio */
  "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { PageHeader } from "@/components/page-header";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -18,22 +18,67 @@ import { Switch } from "@/components/ui/switch";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { useAuth } from "@/lib/auth-context";
+import { getClientFirestore } from "@/lib/firebase";
+import { doc, getDoc } from "firebase/firestore";
 import { Camera, Save } from "lucide-react";
 import { toast } from "sonner";
 
 // updating edits to proile (dynamic)
 export default function ProfilePage() {
+
   const { user } = useAuth();
   const [isEditing, setIsEditing] = useState(false);
-    const [profile, setProfile] = useState({
-      name: user?.displayName || "",
-      email: user?.email || "",
-      major: "",
-      year: "",
-      grade: "",
-      bio: "",
-      textNotifications: true,
-    });
+  const [profile, setProfile] = useState({
+    name: user?.displayName || "",
+    email: user?.email || "",
+    major: "",
+    year: "",
+    grade: "",
+    bio: "",
+    textNotifications: true,
+  });
+
+  // Pull major and year from Firestore profile if available, fallback to auth if not
+  useEffect(() => {
+    const fetchProfile = async () => {
+      if (!user) return;
+      try {
+        const db = getClientFirestore();
+        const profileRef = doc(db, "profiles", user.uid);
+        const profileSnap = await getDoc(profileRef);
+        if (profileSnap.exists()) {
+          const data = profileSnap.data();
+          setProfile((prev) => ({
+            ...prev,
+            major: data.major || prev.major || "",
+            year: data.year || prev.year || "",
+            name: data.name || prev.name || user.displayName || "",
+            email: data.email || prev.email || user.email || "",
+            grade: data.grade || prev.grade || "",
+            bio: data.bio || prev.bio || "",
+            textNotifications: typeof data.textNotifications === "boolean" ? data.textNotifications : prev.textNotifications,
+          }));
+        } else {
+          // fallback: try to get major/year from user object if custom claims or metadata used
+          setProfile((prev) => ({
+            ...prev,
+            major: (user as any).major || prev.major || "",
+            year: (user as any).year || prev.year || "",
+          }));
+        }
+      } catch (err) {
+        // fallback: try to get major/year from user object if custom claims or metadata used
+        setProfile((prev) => ({
+          ...prev,
+          major: (user as any).major || prev.major || "",
+          year: (user as any).year || prev.year || "",
+        }));
+      }
+    };
+    fetchProfile();
+    // Only run when user changes
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [user]);
 
   const updateField = (field: string, value: string | boolean) => {
     setProfile((prev) => ({ ...prev, [field]: value }));
